@@ -1,0 +1,151 @@
+# creating time sequences for TWF
+
+rm(list=ls())
+
+# retrieve all the functions
+library(ggplot2)
+library(dplyr)
+library(beepr)
+library(lme4)
+library(lmerTest)
+source("helper_functions/chooseMultinom.R")
+source("helper_functions/chooseBinomial.R")
+source("helper_functions/softmax.R")
+source("computational_model/simulateObsAllTWFsequences.R")
+source("helper_functions/InitVariab.R")
+source("computational_model/lik_RescorlaWagner_obsALLTWF.R")
+
+# probability first block
+mu1 <-c(0.90,0.10)
+mu2<-c(0.60,0.40)
+
+# how many change points?
+changePoints<-3
+
+
+# how many trials per block
+T<-40
+
+# for the alpha, we could use average values
+alphaMean<-0.43
+alphaSD<-0.23
+betaMean<- 7.99
+betaSD<-7.24
+
+participants<- 30
+
+# simulate data - alphas
+alphas<-rnorm(n=participants, mean = alphaMean, sd = alphaSD)
+# we need positive alphas
+while(any (alphas<0)){
+  alphas<-rnorm(n=participants, mean = alphaMean, sd = alphaSD)
+}
+
+# beta
+betas<-rnorm(n=participants, mean = betaMean, sd = betaSD)
+# also positive betas
+while(any (betas<0)){
+  betas<-rnorm(n=participants, mean = betaMean, sd = betaSD)
+}
+
+# categories are length of mu
+categories<-length(mu1)
+
+# blocks are changes plus 1
+blocks<-changePoints+1
+
+# create four lists, that corresponds to the blocks
+list1<-c(rep(1, times=36), rep(2, times=4))
+
+list2<-c(rep(1, times=24), rep(2, times=16))
+
+list3<-c(rep(1, times=4), rep(2, times=36))
+
+list4<-c(rep(1, times=16), rep(2, times=24))
+
+
+
+simulateseq<- function(){# simulate event sequences
+  object_cat<-vector()
+
+# create a counter variable
+counter2<-0
+for ( s in 1:(blocks)){
+  counter1<-1+counter2
+  
+  if (s == 1){ # for epoch 1 strong prior 
+    counter2<-counter2+T
+    # object category, the category displayed to participants
+    object_cat[counter1: counter2]<-sample(list1)
+  } else if (s == 2) { # for epoch 2 flat prior 4
+    counter2<-counter2+T
+    object_cat[counter1: (counter2)]<-sample(list2)
+  } else if (s ==3 ) { # for epoch 2 3
+    counter2<-counter2+T
+    object_cat[counter1: (counter2)]<-sample(list3)
+  }else { # for epoch  4, flat prior
+    counter2<-counter2+T
+    object_cat[counter1: (counter2)]<-sample(list4)
+  }
+  
+}
+
+return(object_cat)
+}
+
+# function to simulate the data
+simulateData<-function(){
+
+object_cat<-simulateseq()
+
+# simulate data
+sim<-simulate_RW_obsALLTWFwithsequences(T, mu1, mu2, alpha = 0.3, beta = 2, object_cat)
+
+# get parameters
+estimateObs<-lik_RescorlaWagner_obsALLTWF(Data  = sim, alpha = 0.1, beta = 2, print = 3, changePoints = 3)
+
+# check if there are any probabilities in epoch 2 and 4 that go beyond 65 %
+epochsFlat<-filter(estimateObs,epoch ==2 | epoch ==4 )
+
+probs<-pull(epochsFlat, P1, P2)
+
+return(list(probs, estimateObs))
+}
+
+# set seed for reproducibility of simulations
+set.seed(1234)
+
+trial_sequences<-vector(mode="list")
+Alllist<-vector(mode = "list")
+
+for (n in 1:5) {
+
+sequence<-simulateData()
+
+probs<-sequence[[1]]
+
+seq<-sequence[[2]]$object_cat
+
+
+while(any(probs>=0.70 )){
+  sequence<-simulateData()
+  probs<-sequence[[1]]
+}
+
+trial_sequences[[n]]<-sequence[[2]][,c(1,3)]
+Alllist[[n]]<-sequence[[2]]
+}
+
+for (n in 1:5){
+print(
+# print the probability
+ggplot(Alllist[[n]], aes(x=trialN))+
+  #stat_summary(fun.y="mean",geom="line")+
+  geom_line(aes(y=P1), size = 1.5, color = "blue")+
+  geom_line(aes(y=P2),size = 1.5, color = "darkgreen")+
+  ggtitle(paste("list N", n))
+  
+)
+}
+
+

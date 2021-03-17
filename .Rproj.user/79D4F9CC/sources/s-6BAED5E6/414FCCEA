@@ -1,0 +1,32 @@
+{
+    "id": "414FCCEA",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1614357869215.0,
+    "source_on_save": false,
+    "relative_order": 13,
+    "properties": {
+        "expression": "trial_sequences",
+        "caption": "trial_sequences",
+        "totalObservations": 160,
+        "displayedObservations": 160,
+        "variables": 5,
+        "cacheKey": "3818F5BC",
+        "object": "trial_sequences",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=trial_sequences&cache_key=3818F5BC&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1614345071,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1614357869215,
+    "read_only": false,
+    "read_only_alternatives": []
+}

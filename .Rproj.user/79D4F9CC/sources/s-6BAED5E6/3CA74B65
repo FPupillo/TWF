@@ -1,0 +1,32 @@
+{
+    "id": "3CA74B65",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1614276114599.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "expression": "estimateOBS",
+        "caption": "estimateOBS",
+        "totalObservations": "160",
+        "displayedObservations": "160",
+        "variables": "17",
+        "cacheKey": "7F5B3603",
+        "object": "estimateOBS",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=estimateOBS&cache_key=7F5B3603&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 6532237778313536828,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1614276114599,
+    "read_only": false,
+    "read_only_alternatives": []
+}

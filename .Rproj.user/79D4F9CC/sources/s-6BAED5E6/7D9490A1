@@ -1,0 +1,32 @@
+{
+    "id": "7D9490A1",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1614276734334.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "expression": "DataAll",
+        "caption": "DataAll",
+        "totalObservations": "4800",
+        "displayedObservations": "4800",
+        "variables": "21",
+        "cacheKey": "E2289528",
+        "object": "DataAll",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=DataAll&cache_key=E2289528&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 6532237778313536828,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1614276734334,
+    "read_only": false,
+    "read_only_alternatives": []
+}
